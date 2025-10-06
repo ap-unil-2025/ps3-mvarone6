@@ -2,6 +2,8 @@
 Problem 4: File Word Counter
 Process text files and perform various analyses.
 """
+from typing import Dict
+import string
 
 def create_sample_file(filename="sample.txt"):
     """
@@ -32,8 +34,9 @@ def count_words(filename):
     """
     # TODO: Open file and count words
     # Hint: Use split() to separate words
-    pass
-
+    with open(filename, 'r') as f:
+        text = f.read()
+    return len(text.split())
 
 def count_lines(filename):
     """
@@ -46,8 +49,8 @@ def count_lines(filename):
         int: Total number of lines
     """
     # TODO: Open file and count lines
-    pass
-
+    with open(filename, 'r') as f:
+        return sum(1 for _ in f)
 
 def count_characters(filename, include_spaces=True):
     """
@@ -62,7 +65,11 @@ def count_characters(filename, include_spaces=True):
     """
     # TODO: Open file and count characters
     # If include_spaces is False, don't count spaces
-    pass
+    with open(filename, 'r') as f:
+        text = f.read()
+    if include_spaces:
+        return len(text)
+    return sum(1 for ch in text if ch != " ")
 
 
 def find_longest_word(filename):
@@ -77,7 +84,12 @@ def find_longest_word(filename):
     """
     # TODO: Find the longest word
     # Hint: You might need to remove punctuation
-    pass
+    import string
+    with open(filename, 'r') as f:
+        text = f.read()
+    translator = str.maketrans('', '', string.punctuation)
+    words = text.lower().translate(translator).split()
+    return max(words, key=len) if words else ""
 
 
 def word_frequency(filename):
@@ -100,7 +112,13 @@ def word_frequency(filename):
     # TODO: Convert to lowercase
     # TODO: Remove punctuation (use string.punctuation)
     # TODO: Count frequency of each word
-
+    with open(filename, 'r') as f:
+        text = f.read()
+    translator = str.maketrans('', '', string.punctuation)
+    cleaned_text = text.lower().translate(translator)
+    words = cleaned_text.split()
+    for w in words:
+        frequency[w] = frequency.get(w, 0) + 1
     return frequency
 
 
